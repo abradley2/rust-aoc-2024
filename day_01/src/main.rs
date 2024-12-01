@@ -25,9 +25,9 @@ fn part_one(input: &[u8]) -> Result<u32, Error> {
     let mut right_iter = right_vec.iter();
 
     let mut result: u32 = 0;
-    let mut line_idx: usize = 0;
+    let mut line_number: usize = 0;
     loop {
-        line_idx += 1;
+        line_number += 1;
         let l = left_iter.next();
         let r = right_iter.next();
 
@@ -36,7 +36,7 @@ fn part_one(input: &[u8]) -> Result<u32, Error> {
                 result = result + u32::abs_diff(*l_val, *r_val);
             }
             (None, None) => break,
-            _ => return Err(Error::UnevenLines(line_idx)),
+            _ => return Err(Error::UnevenLines(line_number)),
         }
     }
 
