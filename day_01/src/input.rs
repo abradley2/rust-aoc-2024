@@ -1,4 +1,5 @@
 #[derive(Debug)]
+#[allow(dead_code)]
 pub enum Error {
     MalformedLine(usize),
     MalformedInt((usize, std::num::ParseIntError)),

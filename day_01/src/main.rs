@@ -8,15 +8,9 @@ fn main() {
     println!("Part 2: {:?}", part_two(input));
 }
 
-#[derive(Debug)]
-pub enum Error {
-    UnevenLines(usize),
-    InputError(input::Error),
-}
-
-fn part_one(input: &[u8]) -> Result<u32, Error> {
+fn part_one(input: &[u8]) -> u32 {
     let (mut left_vec, mut right_vec): (Vec<u32>, Vec<u32>) =
-        input::parse_input(input).map_err(Error::InputError)?;
+        input::parse_input(input).expect("Failed to parse input");
 
     left_vec.sort();
     right_vec.sort();
@@ -25,9 +19,7 @@ fn part_one(input: &[u8]) -> Result<u32, Error> {
     let mut right_iter = right_vec.iter();
 
     let mut result: u32 = 0;
-    let mut line_number: usize = 0;
     loop {
-        line_number += 1;
         let l = left_iter.next();
         let r = right_iter.next();
 
@@ -36,16 +28,16 @@ fn part_one(input: &[u8]) -> Result<u32, Error> {
                 result = result + u32::abs_diff(*l_val, *r_val);
             }
             (None, None) => break,
-            _ => return Err(Error::UnevenLines(line_number)),
+            _ => continue,
         }
     }
 
-    Ok(result)
+    result
 }
 
-fn part_two(input: &[u8]) -> Result<u32, Error> {
+fn part_two(input: &[u8]) -> u32 {
     let (left_vec, right_vec): (Vec<u32>, Vec<u32>) =
-        input::parse_input(input).map_err(Error::InputError)?;
+        input::parse_input(input).expect("Failed to parse input");
 
     let mut result: u32 = 0;
     let score_map = make_score_map(right_vec);
@@ -55,7 +47,7 @@ fn part_two(input: &[u8]) -> Result<u32, Error> {
         result = result + (l * sim_score);
     }
 
-    Ok(result)
+    result
 }
 
 fn make_score_map(right_vec: Vec<u32>) -> HashMap<u32, u32> {
